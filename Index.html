@@ -1,43 +1,36 @@
+const express = require('express');
+const app = express();
+
+const PORT = 3000;
+
+// 🌐 player direto
+app.get('/filme/:id', (req, res) => {
+    const id = req.params.id;
+
+    res.send(`
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Player</title>
-
+<title>Filme</title>
 <style>
-html,body{
-margin:0;
-padding:0;
-width:100%;
-height:100%;
-background:black;
-}
-
-iframe{
-width:100%;
-height:100%;
-border:0;
-}
+body { margin:0; background:black; }
+iframe { width:100%; height:100vh; border:0; }
 </style>
 </head>
-
 <body>
-
-<iframe id="p"></iframe>
-
-<script>
-try {
-  const id = new URLSearchParams(location.search).get("id");
-  if (!id) {
-    document.body.innerHTML = "<h3 style='color:white;text-align:center;margin-top:40vh'>sem id</h3>";
-  } else {
-    document.getElementById("p").src = "https://myembed.biz/filme/" + id;
-  }
-} catch(e) {
-  document.body.innerHTML = "<h3 style='color:white;text-align:center;margin-top:40vh'>erro</h3>";
-}
-</script>
-
+<iframe src="https://myembed.biz/filme/${id}" allowfullscreen></iframe>
 </body>
 </html>
+    `);
+});
+
+// 🔥 health check
+app.get('/', (req, res) => {
+    res.send('Servidor de filmes online ✔️');
+});
+
+app.listen(PORT, () => {
+    console.log(`🔥 server rodando em http://localhost:${PORT}`);
+});
